@@ -1,0 +1,57 @@
+<script type="text/javascript">
+	RED.nodes.registerType('json2mysql',
+	{
+		category: 'storage',
+		color: '#deb887',
+		defaults:
+		{
+			name: {
+				value: ""
+			},
+			server: {
+				value: "",
+				type: "json2mysql-server",
+			},
+			template: {
+				value: ""
+			}
+		},
+		inputs: 1,
+		outputs: 1,
+		icon: 'db.svg',
+		label: function()
+		{
+			return this.name || 'json 2 mysql';
+		},
+		oneditprepare: function()
+		{
+			$("#node-input-template").typedInput({
+				type:"json",
+				types:["json"]
+			});
+		}
+	});
+</script>
+
+<script type="text/html" data-template-name="json2mysql">
+
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name" placeholder="Name">
+	</div>
+
+	<div class="form-row">
+		<label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+		<input type="text" id="node-input-server">
+	</div>
+
+	<div class="form-row">
+		<label for="node-input-template"><i class="fa fa-code"></i> Template</label>
+		<input type="text" id="node-input-template">
+	</div>
+
+</script>
+
+<script type="text/html" data-help-name="json2mysql">
+	<p>Creates mysql queries from json</p>
+</script>
