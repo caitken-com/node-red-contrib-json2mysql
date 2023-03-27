@@ -1,0 +1,59 @@
+<script type="text/javascript">
+RED.nodes.registerType('json2mysql-server',
+{
+	category: "config",
+	defaults:
+	{
+		host: {
+			required: true,
+			value: "localhost"
+		},
+		database: {
+			required: true,
+			value: "",
+		},
+		user:
+		{
+			required: true,
+			value: "",
+		},
+		password:
+		{
+			required: true,
+			value: "",
+		}
+	},
+	label: function()
+	{
+		return this.host;
+	}
+});
+</script>
+
+<script type="text/html" data-template-name="json2mysql-server">
+
+	<div class="form-row">
+		<label for="node-config-input-host"><i class="fa fa-globe"></i> Host</label>
+		<input type="text" id="node-config-input-host" placeholder="localhost">
+	</div>
+
+	<div class="form-row">
+		<label for="node-config-input-database"><i class="fa fa-database"></i> Database</label>
+		<input type="text" id="node-config-input-database" placeholder="">
+	</div>
+
+	<div class="form-row">
+		<label for="node-config-input-user"><i class="fa fa-user"></i> User</label>
+		<input type="text" id="node-config-input-user" placeholder="">
+	</div>
+
+	<div class="form-row">
+		<label for="node-config-input-password"><i class="fa fa-unlock-alt"></i> Password</label>
+		<input type="password" id="node-config-input-password" placeholder="">
+	</div>
+
+</script>
+
+<script type="text/html" data-help-name="json2mysql-server">
+	<p>Node for connecting to mysql databases</p>
+</script>
