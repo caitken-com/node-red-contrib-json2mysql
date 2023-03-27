@@ -1,6 +1,6 @@
 {
 	"name": "@caitken-com/node-red-contrib-json2mysql",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "JSON to MYSQL",
 	"main": "json2mysql.js",
 	"keywords": [
@@ -12,10 +12,10 @@
 		"mysql": "2.18.1"
 	},
 	"engines": {
-			"node": ">=14.18.1"
+		"node": ">=14.18.1"
 	},
 	"bugs": {
-		"url" : "https://github.com/caitken-com/node-red-contrib-json2mysql/issues"
+		"url": "https://github.com/caitken-com/node-red-contrib-json2mysql/issues"
 	},
 	"author": "Christopher Aitken",
 	"homepage": "https://github.com/caitken-com/node-red-contrib-json2mysql",
