@@ -5,7 +5,8 @@
 	"main": "json2mysql.js",
 	"keywords": [
 		"mysql",
-		"json"
+		"json",
+		"node-red"
 	],
 	"dependencies": {
 		"mysql": "2.18.1"
