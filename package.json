@@ -11,10 +11,17 @@
 	"dependencies": {
 		"mysql": "2.18.1"
 	},
+	"engines": {
+			"node": ">=14.18.1"
+	},
+	"bugs": {
+		"url" : "https://github.com/caitken-com/node-red-contrib-json2mysql/issues"
+	},
 	"author": "Christopher Aitken",
 	"homepage": "https://github.com/caitken-com/node-red-contrib-json2mysql",
 	"license": "MIT",
 	"node-red": {
+		"version": ">=2.0.0",
 		"nodes": {
 			"json2mysql-server": "json2mysql-server.js",
 			"json2mysql": "json2mysql.js"

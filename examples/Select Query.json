@@ -1,0 +1,71 @@
+[
+	{
+		"id": "67b87db683b57309",
+		"type": "inject",
+		"z": "8c180d1dc0472279",
+		"name": "select",
+		"props": [
+			{
+				"p": "payload"
+			},
+			{
+				"p": "topic",
+				"vt": "str"
+			}
+		],
+		"repeat": "",
+		"crontab": "",
+		"once": false,
+		"onceDelay": 0.1,
+		"topic": "",
+		"payload": "{\"select\":{\"table\":{\"users\":\"user\"},\"columns\":[\"'user.*\",\"DATE() as thing\"]},\"joins\":[{\"type\":\"inner\",\"table\":{\"orders\":\"order\"},\"conditions\":[[\"order.user_id\",\"=\",\"user.id\"]]},{\"type\":\"inner\",\"table\":{\"salaries\":\"salary\"},\"conditions\":[[\"salary.user_id\",\"=\",\"user.id\"]]}],\"where\":[[\"order.user_id\",\"=\",\"?\"],[\"order.name\",\"=\",\"?\"],[\"user.id\",\"in\",[\"?\",1,3,4]]],\"group\":[\"user.id\",\"order.id\"],\"order\":[{\"user.id\":\"DESC\"},\"user.id\"],\"params\":[20.5,\"Hello world\",\"cows\"],\"return\":\"string\"}",
+		"payloadType": "json",
+		"x": 230,
+		"y": 520,
+		"wires": [
+			[
+				"d38bbe17d8cac5f3"
+			]
+		]
+	},
+	{
+		"id": "e9d23172db1f12a6",
+		"type": "debug",
+		"z": "8c180d1dc0472279",
+		"name": "",
+		"active": true,
+		"tosidebar": true,
+		"console": false,
+		"tostatus": false,
+		"complete": "payload",
+		"targetType": "msg",
+		"statusVal": "",
+		"statusType": "auto",
+		"x": 570,
+		"y": 520,
+		"wires": []
+	},
+	{
+		"id": "d38bbe17d8cac5f3",
+		"type": "json2mysql",
+		"z": "8c180d1dc0472279",
+		"name": "",
+		"server": "9c64bd8cf820221c",
+		"template": "",
+		"x": 390,
+		"y": 520,
+		"wires": [
+			[
+				"e9d23172db1f12a6"
+			]
+		]
+	},
+	{
+		"id": "9c64bd8cf820221c",
+		"type": "json2mysql-server",
+		"host": "localhost",
+		"database": "test",
+		"user": "test",
+		"password": "test"
+	}
+]
