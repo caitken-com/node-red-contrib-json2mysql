@@ -1,6 +1,6 @@
 {
 	"name": "@caitken-com/node-red-contrib-json2mysql",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "JSON to MYSQL",
 	"main": "json2mysql.js",
 	"keywords": [
@@ -10,7 +10,7 @@
 	],
 	"dependencies": {
 		"mysql": "2.18.1"
-    },
+	},
 	"author": "Christopher Aitken",
 	"homepage": "https://github.com/caitken-com/node-red-contrib-json2mysql",
 	"license": "MIT",
