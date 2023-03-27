@@ -11,7 +11,8 @@
 		"mysql": "2.18.1"
     },
 	"author": "Christopher Aitken",
-	"license": "ISC",
+	"homepage": "https://github.com/caitken-com/node-red-contrib-json2mysql",
+	"license": "MIT",
 	"node-red": {
 		"nodes": {
 			"json2mysql-server": "json2mysql-server.js",
