@@ -24,28 +24,38 @@ module.exports = function(RED)
 
 		node.query = function query(query)
 		{
-			let connection = mysql.createConnection(
-			{
-				host: node.host,
-				user: node.user,
-				password: node.password,
-				database: node.database,
-			});
-
 			return new Promise((resolve, reject) =>
 			{
-				connection.query(query, (error, results, fields) =>
+				let connection;
+
+				try
 				{
-					if (error) return reject(error);
-
-					resolve({
-						payload: results,
-						insertId: ('insertId' in results) ? results.insertId : null,
-						affectedRows: ('affectedRows' in results) ? results.affectedRows : null,
-						changedRows: ('changedRows' in results) ? results.changedRows : null,
+					connection = mysql.createConnection(
+					{
+						host: node.host,
+						user: node.user,
+						password: node.password,
+						database: node.database,
 					});
-				});
 
+					connection.query(query, (error, results, fields) =>
+					{
+						connection.end();
+
+						if (error) return reject(error);
+
+						resolve({
+							payload: results,
+							insertId: ('insertId' in results) ? results.insertId : null,
+							affectedRows: ('affectedRows' in results) ? results.affectedRows : null,
+							changedRows: ('changedRows' in results) ? results.changedRows : null,
+						});
+					});
+				}
+				catch(error)
+				{
+					reject(error);
+				}
 			});
 		}
 	}

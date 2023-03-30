@@ -31,16 +31,23 @@ module.exports = function(RED)
 			// Apply template to payload
 			if (node.template !== "")
 			{
-				let incoming = JSON.parse(JSON.stringify(msg.payload));
-				msg.payload = JSON.parse(node.template);
-
-				// Override template with incoming values
-				if (typeof incoming == 'object')
+				try
 				{
-					for (let key in incoming)
+					let incoming = JSON.parse(JSON.stringify(msg.payload));
+					msg.payload = JSON.parse(node.template);
+
+					// Override template with incoming values
+					if (typeof incoming == 'object')
 					{
-						msg.payload[key] = JSON.parse(JSON.stringify(incoming[key]));
+						for (let key in incoming)
+						{
+							msg.payload[key] = JSON.parse(JSON.stringify(incoming[key]));
+						}
 					}
+				}
+				catch (error)
+				{
+					return node.warn(error);
 				}
 			}
 
@@ -53,137 +60,23 @@ module.exports = function(RED)
 			node.query.reset();
 
 			// Populate query generator
-			if ('select' in msg.payload)
+			try
 			{
-				try
-				{
-					node.query.select(msg.payload.select);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
+				if ('select' in msg.payload) node.query.select(msg.payload.select);
+				if ('insert' in msg.payload) node.query.insert(msg.payload.insert);
+				if ('update' in msg.payload) node.query.update(msg.payload.update);
+				if ('delete' in msg.payload) node.query.delete(msg.payload.delete);
+				if ('joins' in msg.payload) node.query.joins(msg.payload.joins);
+				if ('where' in msg.payload) node.query.where(msg.payload.where);
+				if ('having' in msg.payload) node.query.having(msg.payload.having);
+				if ('order' in msg.payload) node.query.order(msg.payload.order);
+				if ('group' in msg.payload) node.query.group(msg.payload.group);
+				if ('limit' in msg.payload) node.query.limit(msg.payload.limit);
+				if ('params' in msg.payload) node.query.params(msg.payload.params);
 			}
-
-			if ('insert' in msg.payload)
+			catch (err)
 			{
-				try
-				{
-					node.query.insert(msg.payload.insert);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-
-			if ('update' in msg.payload)
-			{
-				try
-				{
-					node.query.update(msg.payload.update);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('delete' in msg.payload)
-			{
-				try
-				{
-					node.query.delete(msg.payload.delete);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('joins' in msg.payload)
-			{
-				try
-				{
-					node.query.joins(msg.payload.joins);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('where' in msg.payload)
-			{
-				try
-				{
-					node.query.where(msg.payload.where);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('having' in msg.payload)
-			{
-				try
-				{
-					node.query.having(msg.payload.having);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('order' in msg.payload)
-			{
-				try
-				{
-					node.query.order(msg.payload.order);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('group' in msg.payload)
-			{
-				try
-				{
-					node.query.group(msg.payload.group);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('limit' in msg.payload)
-			{
-				try
-				{
-					node.query.limit(msg.payload.limit);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
-			}
-
-			if ('params' in msg.payload)
-			{
-				try
-				{
-					node.query.params(msg.payload.params);
-				}
-				catch (err)
-				{
-					return node.warn(err);
-				}
+				return node.warn(err);
 			}
 
 			// Generate query and either execute or return query string
