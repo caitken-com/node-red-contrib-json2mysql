@@ -1,6 +1,6 @@
 {
 	"name": "@caitken-com/node-red-contrib-json2mysql",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "JSON to MYSQL",
 	"main": "json2mysql.js",
 	"keywords": [
