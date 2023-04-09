@@ -28,6 +28,8 @@ module.exports = function(RED)
 		 */
 		node.on('input', function(msg)
 		{
+			let topic = msg.topic || null;
+
 			// Apply template to payload
 			if (node.template !== "")
 			{
@@ -86,7 +88,7 @@ module.exports = function(RED)
 				case 'string':
 					try
 					{
-						node.send({payload: node.query.build()});
+						node.send({'payload': node.query.build(), 'topic': topic});
 					}
 					catch (err)
 					{
@@ -99,7 +101,13 @@ module.exports = function(RED)
 					node.server.query(node.query.build())
 					.then((result) =>
 					{
-						node.send(result);
+						node.send({
+							'payload': {...result.payload},
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
+						});
 					})
 					.catch((err) =>
 					{
@@ -127,10 +135,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: rows,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': rows,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -147,10 +156,11 @@ module.exports = function(RED)
 						for (let i in result.payload)
 						{
 							node.send({
-								payload: {...result.payload[i]},
-								insertId: result.insertId,
-								affectedRows: result.affectedRows,
-								changedRows: result.changedRows,
+								'payload': {...result.payload[i]},
+								'insertId': result.insertId,
+								'affectedRows': result.affectedRows,
+								'changedRows': result.changedRows,
+								'topic': topic,
 							});
 
 							break;
@@ -180,10 +190,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: row,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': row,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -215,10 +226,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: rows,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': rows,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -255,10 +267,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: rows,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': rows,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -285,10 +298,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: val,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': val,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -315,10 +329,11 @@ module.exports = function(RED)
 						}
 
 						node.send({
-							payload: rows,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': rows,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
@@ -332,10 +347,11 @@ module.exports = function(RED)
 					.then((result) =>
 					{
 						node.send({
-							payload: result.payload.length,
-							insertId: result.insertId,
-							affectedRows: result.affectedRows,
-							changedRows: result.changedRows,
+							'payload': result.payload.length,
+							'insertId': result.insertId,
+							'affectedRows': result.affectedRows,
+							'changedRows': result.changedRows,
+							'topic': topic,
 						});
 					})
 					.catch((err) =>
