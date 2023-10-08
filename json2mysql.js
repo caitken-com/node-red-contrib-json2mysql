@@ -1,4 +1,4 @@
-const Json2mysqlQuery = require('./Json2mysqlQuery');
+const SimpleSqlBuilder = require('@caitken-com/simple-sql-builder');
 
 
 /**
@@ -15,7 +15,7 @@ module.exports = function(RED)
 		RED.nodes.createNode(this, config);
 
 		const node = this;
-		node.query = new Json2mysqlQuery();
+		node.query = null;
 		node.server = RED.nodes.getNode(config.server);
 		node.template = config.template;
 
@@ -58,27 +58,14 @@ module.exports = function(RED)
 			if (typeof msg.payload != 'object') return node.send(null);
 			if (!('return' in msg.payload)) msg.payload.return = 'string';
 
-			// Clear query generator
-			node.query.reset();
-
 			// Populate query generator
 			try
 			{
-				if ('select' in msg.payload) node.query.select(msg.payload.select);
-				if ('insert' in msg.payload) node.query.insert(msg.payload.insert);
-				if ('update' in msg.payload) node.query.update(msg.payload.update);
-				if ('delete' in msg.payload) node.query.delete(msg.payload.delete);
-				if ('joins' in msg.payload) node.query.joins(msg.payload.joins);
-				if ('where' in msg.payload) node.query.where(msg.payload.where);
-				if ('having' in msg.payload) node.query.having(msg.payload.having);
-				if ('order' in msg.payload) node.query.order(msg.payload.order);
-				if ('group' in msg.payload) node.query.group(msg.payload.group);
-				if ('limit' in msg.payload) node.query.limit(msg.payload.limit);
-				if ('params' in msg.payload) node.query.params(msg.payload.params);
+				node.query = SimpleSqlBuilder.fromJson(msg.payload);
 			}
 			catch (err)
 			{
-				return node.warn(err);
+				return node.warn('err1: ' + err);
 			}
 
 			// Generate query and either execute or return query string
@@ -88,7 +75,7 @@ module.exports = function(RED)
 				case 'string':
 					try
 					{
-						node.send({'payload': node.query.build(), 'topic': topic});
+						node.send({'payload': node.query, 'topic': topic});
 					}
 					catch (err)
 					{
@@ -98,7 +85,7 @@ module.exports = function(RED)
 
 				// An array of rows, where each row is an associative array
 				case 'array':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						node.send({
@@ -117,7 +104,7 @@ module.exports = function(RED)
 
 				// An array of rows, where each row is a numeric array
 				case 'array-num':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let rows = [];
@@ -150,7 +137,7 @@ module.exports = function(RED)
 
 				// A single row, as an associative array
 				case 'row':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						for (let i in result.payload)
@@ -174,7 +161,7 @@ module.exports = function(RED)
 
 				// A single row, as a numeric array
 				case 'row-num':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let row = [];
@@ -205,7 +192,7 @@ module.exports = function(RED)
 
 				// Returns _array_ of `{identifier: value}` _object_ pairs where the identifier is the first column in the result set, and the value is the second
 				case 'map':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let rows = [];
@@ -241,7 +228,7 @@ module.exports = function(RED)
 
 				// Returns _object_ of `{identifier: {col: vaal, ...}}`, where the identifier is the first column in the result set, and the value an _object_ of `{name:value}` pairs
 				case 'map-array':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let rows = {};
@@ -282,7 +269,7 @@ module.exports = function(RED)
 
 				// A single value, of the first column of the first row
 				case 'val':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let val = null;
@@ -313,7 +300,7 @@ module.exports = function(RED)
 
 				// Returns an _array_ from the first column of each row
 				case 'col':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						let rows = [];
@@ -343,7 +330,7 @@ module.exports = function(RED)
 					break;
 
 				case 'count':
-					node.server.query(node.query.build())
+					node.server.query(node.query)
 					.then((result) =>
 					{
 						node.send({
